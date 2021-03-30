@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import MyDropzone from "./component/myDropZone";
+import "./app.css";
+import ViewFiles from "./component/viewFiles";
 
 function App() {
+  const [step, setStep] = React.useState(0);
+  const [files, setFiles] = React.useState([]);
+  const handleUpload = (files) => {
+    setFiles(files);
+    setStep(1);
+  };
+
+  const hanldeMore  =  ()  =>  {
+    setStep(0);
+    setFiles([]);
+  };
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Stepper step={step}>
+        <MyDropzone handleUpload={handleUpload} />
+        <ViewFiles files={files} hanldeMore={hanldeMore}/>
+      </Stepper>
     </div>
   );
 }
 
 export default App;
+
+const Stepper = ({ children, step }) => {
+  const reactChildren = React.Children.toArray(children);
+  const currentChild = reactChildren[step];
+  return <div>{currentChild}</div>;
+};
